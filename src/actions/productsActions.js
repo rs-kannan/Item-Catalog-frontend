@@ -1,18 +1,14 @@
-import axios from "axios"
-import { productsRequest } from "../slices/productsSlice";
+import axios from "axios";
+import { productsFail, productsRequest, productsSuccess } from "../slices/productsSlice";
 
+export const getProducts = async (dispatch) => {
+  try {
+    dispatch(productsRequest());
 
-
-export const getProducts = async() =>{
-   
-    try {
-        productsRequest 
-        const {data} = await axios.get('api/v1/products');
-        
-    } catch (error) {
-        //handle error
-
-    }
-    
-
-}
+    const { data } = await axios.get("api/v1/products");
+    dispatch(productsSuccess())
+  } catch (error) {
+    //handle error
+    dispatch(productsFail(error.response.data.message))
+  }
+};
